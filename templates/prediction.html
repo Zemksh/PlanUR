@@ -19,10 +19,33 @@
         <h3>Map for: {{ location }}</h3>
         <div id="map-container">
             <iframe 
-                src="https://www.google.com/maps/embed/v1/place?key=&q={{ location }}" 
+                src="https://www.google.com/maps/embed/v1/place?key=&q={{ location }}" \
                 allowfullscreen>
             </iframe>
         </div>
     {% endif %}
+    <br>
+    <br>
+    
+    <form action = "{{url_for('final')}}" method = "post">
+        <h2>Enter your choice for further classification</h2>
+        <input type = "radio" id = "greencover" name ="answer" value ="greencover"/>
+        <label for ="greencover">Green Cover</label><br>
+        <br>
+        <input type = "radio" id = "renewableenergy" name ="answer" value ="renewableenergy"/>
+        <label for ="renewableenergy">Renewable Energy</label><br>
+        <br>
+        <input type = "radio" id = "balanced" name ="answer" value = "balanced"/>
+        <label for="balanced">Balanced</label><br>
+        <br>
+        <input type = "submit" value = "Submit">
+
+        
+    </form>
+    <br>
+    <br>
+    <h2>{{Textbe}}</h2>
+    
+
 </body>
 </html>

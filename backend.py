@@ -12,6 +12,16 @@ def predict():
         location = request.form.get("location")
     return render_template('prediction.html' , location = location, prediction_text='THIS IS HERE')
 
-
+@app.route('/final',methods =['GET','POST'])
+def final():
+    answer = ""
+    if request.method =="POST":
+        answer = request.form.get("answer")
+    if answer == "greencover":
+        return  render_template('prediction.html',answer = answer,Textbe="Green cover map")
+    elif answer == "renewableenergy":
+        return  render_template('prediction.html',answer = answer,Textbe="Renewable energy map ")
+    elif answer == "balanced":
+        return  render_template('prediction.html',answer = answer, Textbe="balanced map be")
 if __name__ == "__main__":
     app.run(debug=True)
