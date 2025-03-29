@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PlanUR</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link href="{{ url_for('static', filename='images/image.jpg') }}">
+    <link rel="stylesheet" type = "text/css" href='../static/css/styles1.css'>
+</head>
+<body>
+    <div class="main_title">
+        <h1></h1>
+        <img src="../static/images/small.png">
+    </div>
+    <div class="center-text">
+        {% if location %}
+        <h3>Map for: {{ location }}</h3>
+        <div id="map-container">
+            <iframe 
+                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyC5P_A7ZmDK22JxOpYfyH9adOE6piR4y6M&q={{ location }}" 
+                allowfullscreen>
+            </iframe>
+        </div>
+    {% endif %}
+</body>
+</html>

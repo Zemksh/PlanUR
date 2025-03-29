@@ -17,14 +17,5 @@
         <input type="text" name = "location" id="inputbox" >
         <input type ="submit" id="submitbutton">
         </form>
-        {% if location %}
-        <h3>Map for: {{ location }}</h3>
-        <div id="map-container">
-            <iframe 
-                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyC5P_A7ZmDK22JxOpYfyH9adOE6piR4y6M&q={{ location }}" 
-                allowfullscreen>
-            </iframe>
-        </div>
-    {% endif %}
 </body>
 </html>
