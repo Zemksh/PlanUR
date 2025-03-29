@@ -9,13 +9,13 @@ background: linear-gradient(90deg, rgba(42,52,37,1) 0%, rgba(0,255,134,1) 100%);
 .center-text h2{
     color: #f8e5b7;
 }
-.center-text{
+.mapthing{
     max-width: fit-content;
     margin-left: auto;
     margin-right: auto;
     display: block;
 }
-.center-text h2{
+.mapthing h2{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
@@ -24,7 +24,7 @@ background: linear-gradient(90deg, rgba(42,52,37,1) 0%, rgba(0,255,134,1) 100%);
     text-align: center;
 }
 iframe {
-    width: 80%;
+    width: 600px;
     max-width: 600px;
     height: 400px;
     border-radius: 10px;

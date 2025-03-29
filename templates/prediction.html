@@ -9,14 +9,17 @@
 <body>
     <div class="main_title">
         <h1></h1>
-        <img src="../static/images/small.png">
+        <form action = "{{url_for('home')}}">
+            <input type="image" src="../static/images/small.png">
+        </form>
+        
     </div>
-    <div class="center-text">
+    <div class="mapthing">
         {% if location %}
         <h3>Map for: {{ location }}</h3>
         <div id="map-container">
             <iframe 
-                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyC5P_A7ZmDK22JxOpYfyH9adOE6piR4y6M&q={{ location }}" 
+                src="https://www.google.com/maps/embed/v1/place?key=&q={{ location }}" 
                 allowfullscreen>
             </iframe>
         </div>
