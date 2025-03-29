@@ -30,3 +30,7 @@ iframe {
     border-radius: 10px;
     border: 2px solid #ddd;
 }
+.error{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: red;
+}

@@ -23,5 +23,7 @@ def final():
         return  render_template('prediction.html',answer = answer,Textbe="Renewable energy map ")
     elif answer == "balanced":
         return  render_template('prediction.html',answer = answer, Textbe="balanced map be")
+    else:
+        return render_template('prediction.html',answer = answer, error="please select an option")
 if __name__ == "__main__":
     app.run(debug=True)
