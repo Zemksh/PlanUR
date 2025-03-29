@@ -10,7 +10,12 @@ def predict():
     location = ""  # Default empty location
     if request.method == "POST":
         location = request.form.get("location")
-    return render_template('prediction.html' , location = location, prediction_text='THIS IS HERE')
+    if location =="":
+        return render_template('index.html' , noinput = "enter a valid input")
+    else:
+        return render_template('prediction.html' , location = location)
+
+    
 
 @app.route('/final',methods =['GET','POST'])
 def final():

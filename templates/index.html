@@ -15,7 +15,11 @@
         <form action = "{{url_for('predict')}}" method = "post" >
             <h2>Enter city name:</h2>
         <input type="text" name = "location" id="inputbox" >
-        <input type ="submit" id="submitbutton">
+        <br>
+        <br>
+        <input type ="submit" id="submitbutton"><br><br>
+        <div class ="noinput">{{noinput}}</div>
         </form>
+
 </body>
 </html>
