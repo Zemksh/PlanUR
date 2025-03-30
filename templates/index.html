@@ -12,7 +12,7 @@
         <img src="../static/images/ove-removebg-preview (1).png">
     </div>
     <div class="center-text">
-        <form action="{{ url_for('predict') }}" method="post">
+        <form action="{{url_for('predict')}}" method="post">
             <h2>Enter Coordinates:</h2>
             <label for="latitude">Latitude:</label>
             <input type="text" name="latitude" id="latitude" required>
