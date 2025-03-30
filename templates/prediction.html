@@ -4,59 +4,56 @@
     <title>PlanUR</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link href="{{ url_for('static', filename='images/image.jpg') }}">
-    <link rel="stylesheet" type = "text/css" href='../static/css/styles1.css'>
+    <link rel="stylesheet" type="text/css" href="../static/css/styles1.css">
 </head>
 <body>
     <div class="main_title">
         <h1></h1>
-        <form action = "{{url_for('home')}}">
+        <form action="{{ url_for('home') }}">
             <input type="image" src="../static/images/small.png">
         </form>
-        
     </div>
+    
     <div class="mapthing">
-        {% if location %}
-        <h3>Map for: {{ location }}</h3>
+        {% if latitude and longitude %}
+        <h3>Map for: ({{ latitude }}, {{ longitude }})</h3>
         <div id="map-container">
             <iframe 
-                src="https://www.google.com/maps/embed/v1/place?key=&q={{ location }}" \
+                src="https://www.google.com/maps/embed/v1/place?key=&q={{ latitude }},{{ longitude }}"
                 allowfullscreen>
             </iframe>
         </div>
-    {% endif %}
-    <br>
-    <br>
-    
-    <form action = "{{url_for('final')}}" method = "post">
+        {% endif %}
+    </div>
+
+    <br><br>
+
+    <form action="{{ url_for('final') }}" method="post">
         <h2>Enter your choice for further classification</h2>
-        <input type = "radio" id = "greencover" name ="answer" value ="greencover"/>
-        <label for ="greencover">Green Cover</label><br>
-        <br>
-        <input type = "radio" id = "renewableenergy" name ="answer" value ="renewableenergy"/>
-        <label for ="renewableenergy">Renewable Energy</label><br>
-        <br>
-        <input type = "radio" id = "balanced" name ="answer" value = "balanced"/>
-        <label for="balanced">Balanced</label><br>
-        <br>
-        <input type = "submit" value = "Submit">
+        <input type="radio" id="greencover" name="answer" value="greencover"/>
+        <label for="greencover">Green Cover</label><br><br>
 
-        
+        <input type="radio" id="renewableenergy" name="answer" value="renewableenergy"/>
+        <label for="renewableenergy">Renewable Energy</label><br><br>
+
+        <input type="radio" id="balanced" name="answer" value="balanced"/>
+        <label for="balanced">Balanced</label><br><br>
+
+        <input type="submit" value="Submit">
     </form>
-    <div class ="error"><h3>{{error}}</h3></div>
 
-    <br>
-    <br>
-    <h2>{{Textbe}}</h2>
-    
+    <div class="error"><h3>{{ error }}</h3></div>
+
+    <br><br>
+    <h2>{{ Textbe }}</h2>
+
     {% if image_url %}
-    <h3>Generated Map:</h3>
-    <img src="{{ image_url }}" alt="Generated Plot" style="width: 500px; height: auto;">
-{% endif %}
+        <h3>Generated Map:</h3>
+        <img src="{{ image_url }}" alt="Generated Plot" style="width: 500px; height: auto;">
+    {% endif %}
 
     {% if error %}
         <p style="color: red;">{{ error }}</p>
     {% endif %}
-    
-
 </body>
 </html>

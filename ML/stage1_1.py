@@ -1,79 +1,100 @@
+
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 import io
+import requests
+from io import BytesIO
+from PIL import Image
+from flask import Flask, render_template, request, Response, url_for
+app = Flask(__name__)
+def get_google_traffic_image(lat, lng, zoom=15, size="640x640", api_key="AIzaSyC5P_A7ZmDK22JxOpYfyH9adOE6piR4y6M"):
+    """
+    Fetches a Google Maps traffic image using Dynamic Tiles API.
+    """
+    x = int((lng + 180) / 360 * (2 ** zoom))
+    y = int((1 - np.log(np.tan(np.radians(lat)) + 1 / np.cos(np.radians(lat))) / np.pi) / 2 * (2 ** zoom))
+    
+    url = (
+        f"https://mt1.google.com/vt/lyrs=m@221097413,traffic&x={x}&y={y}&z={zoom}&scale=1&key={api_key}"
+    )
+    
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Python-Requests/2.28.1"
+    }
+    
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+        img = Image.open(BytesIO(response.content))
+        img.save("google_traffic_image.png")
+        return "google_traffic_image.png"
+    else:
+        print(f"❌ Failed to fetch Google Maps traffic image. Status code: {response.status_code}")
+        return None
 
-def produce_image():
-    # 1️⃣ Load the overlayed image
-    overlay_image = cv2.imread("C:/Users/Korou Kshetrimayum/Desktop/code/PLANUR/PlanUR/ML/terrain_image.png")
-    # Ensure the image is loaded correctly
+def main(lat,lng):
+    # Hardcoded coordinates for Delhi
+    latitude = lat
+    longitude = lng
+    google_maps_api_key = "AIzaSyC5P_A7ZmDK22JxOpYfyH9adOE6piR4y6M"  # Replace with your actual API key
+    
+    # Fetch Google Maps traffic image dynamically
+    overlay_image_path = get_google_traffic_image(latitude, longitude, api_key=google_maps_api_key)
+    if overlay_image_path is None:
+        print("❌ Could not retrieve traffic image.")
+        return None
+    
+    overlay_image = cv2.imread(overlay_image_path)
     if overlay_image is None:
         print("❌ Failed to load the overlayed image.")
-        exit()
-    # 2️⃣ Convert the image to HSV for color filtering
+        return None
+    
     hsv = cv2.cvtColor(overlay_image, cv2.COLOR_BGR2HSV)
     
-    # 3️⃣ Define color ranges for areas to EXCLUDE from green filling
-    # Dark green (existing vegetation) - making range wider
     lower_dark_green = np.array([35, 50, 50])
     upper_dark_green = np.array([90, 255, 255])
-    
-    # Blue (water) - wider range
     lower_blue = np.array([90, 40, 40])
     upper_blue = np.array([150, 255, 255])
-    
-    # Roads and grays (multiple ranges)
     lower_gray1 = np.array([0, 0, 30])
     upper_gray1 = np.array([180, 30, 200])
     
-    # Specific gray with hex #979da2
-    gray_hex_bgr = np.uint8([[[162, 157, 151]]]) # BGR value of #979da2
+    gray_hex_bgr = np.uint8([[[162, 157, 151]]])
     gray_hex_hsv = cv2.cvtColor(gray_hex_bgr, cv2.COLOR_BGR2HSV)[0][0]
     lower_gray_hex = np.array([gray_hex_hsv[0] - 15, gray_hex_hsv[1] - 50, gray_hex_hsv[2] - 50])
     upper_gray_hex = np.array([gray_hex_hsv[0] + 15, gray_hex_hsv[1] + 50, gray_hex_hsv[2] + 50])
     
-    # 4️⃣ Create masks for all elements to exclude
     green_mask = cv2.inRange(hsv, lower_dark_green, upper_dark_green)
     blue_mask = cv2.inRange(hsv, lower_blue, upper_blue)
     gray_mask1 = cv2.inRange(hsv, lower_gray1, upper_gray1)
     gray_hex_mask = cv2.inRange(hsv, lower_gray_hex, upper_gray_hex)
     
-    # 5️⃣ Combine all exclusion masks
     excluded_mask = cv2.bitwise_or(green_mask, blue_mask)
     excluded_mask = cv2.bitwise_or(excluded_mask, gray_mask1)
     excluded_mask = cv2.bitwise_or(excluded_mask, gray_hex_mask)
     
-    # 6️⃣ Invert the mask to target only the fillable areas
     fillable_mask = cv2.bitwise_not(excluded_mask)
     
-    # 7️⃣ Apply erosion to ensure excluded areas are fully covered
     kernel = np.ones((3, 3), np.uint8)
-    fillable_mask = cv2.erode(fillable_mask, kernel, iterations=2)  # Increased iterations
+    fillable_mask = cv2.erode(fillable_mask, kernel, iterations=2)
     
-    # 8️⃣ Apply the mask to fill only non-excluded areas with green
     green_filled = overlay_image.copy()
     green_filled[np.where(fillable_mask > 0)] = (0, 255, 0)
     
-    # 9️⃣ Display the side-by-side visualizations
     fig, axes = plt.subplots(1, 2, figsize=(14, 7))
     
-    # Original Image
     axes[0].imshow(cv2.cvtColor(overlay_image, cv2.COLOR_BGR2RGB))
     axes[0].set_title("Original Overlay")
     axes[0].axis('off')
     
-    # Processed Image
     axes[1].imshow(cv2.cvtColor(green_filled, cv2.COLOR_BGR2RGB))
     axes[1].set_title("New Potential Green Spaces")
     axes[1].axis('off')
     
     plt.tight_layout()
-    
-    # ✅ REMOVE plt.show()
-    
     img = io.BytesIO()
-    plt.savefig(img, format='png') # ✅ Save to memory
-    img.seek(0) # ✅ Go back to the start of the buffer
-    plt.close(fig) # ✅ Close the figure
+    plt.savefig(img, format='png')
+    img.seek(0)
+    plt.close(fig)
     
-    return img # ✅ Return the image buffer
+    return img
