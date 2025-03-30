@@ -35,7 +35,7 @@ def final():
 
 @app.route('/plot.png')
 def plot():
-    img = main(28.6139, 77.2090)  # Example coordinates for Delhi
+    img = main(latitude, longitude)  # Example coordinates for Delhi
     if img is None:
         return "❌ Error generating image", 500
     return Response(img.getvalue(), mimetype='image/png')
