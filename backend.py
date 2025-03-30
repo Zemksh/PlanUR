@@ -1,4 +1,5 @@
-from flask import Flask, url_for, render_template,request # type: ignore
+from flask import Flask, render_template, request, Response, url_for
+from ML.stage1_1 import produce_image 
 app = Flask(__name__)
 @app.route('/', methods = ['GET','POST'])
 def home():
@@ -14,21 +15,22 @@ def predict():
         return render_template('index.html' , noinput = "enter a valid input")
     else:
         return render_template('prediction.html' , location = location)
+  
 
-    
-
-@app.route('/final',methods =['GET','POST'])
+@app.route('/final', methods=['POST'])
 def final():
-    answer = ""
-    if request.method =="POST":
-        answer = request.form.get("answer")
+    answer = request.form.get("answer")
     if answer == "greencover":
-        return  render_template('prediction.html',answer = answer,Textbe="Green cover map")
+        return render_template('prediction.html', answer=answer, Textbe="Green cover map", image_url=url_for('plot'))
     elif answer == "renewableenergy":
-        return  render_template('prediction.html',answer = answer,Textbe="Renewable energy map ")
+        return render_template('prediction.html', answer=answer, Textbe="Renewable energy map", image_url=url_for('plot'))
     elif answer == "balanced":
-        return  render_template('prediction.html',answer = answer, Textbe="balanced map be")
+        return render_template('prediction.html', answer=answer, Textbe="Balanced map", image_url=url_for('plot'))
     else:
-        return render_template('prediction.html',answer = answer, error="please select an option")
+        return render_template('prediction.html', error="Please select an option")
+@app.route('/plot.png')
+def plot():
+    img = produce_image()  # ✅ Call the function correctly
+    return Response(img.getvalue(), mimetype='image/png')
 if __name__ == "__main__":
     app.run(debug=True)

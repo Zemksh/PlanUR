@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+"name": "green_cover_metrics",
+"features": [
+{ "type": "Feature", "properties": { "City": "Location", "Green_Cover_Percentage": 6.240478515625, "Latitude": 10.529459704568222, "Longitude": 76.22184885536457 }, "geometry": { "type": "Point", "coordinates": [ 76.22184885536457, 10.529459704568222 ] } }
+]
+}

@@ -48,6 +48,15 @@
     <br>
     <h2>{{Textbe}}</h2>
     
+    {% if image_url %}
+    <h3>Generated Map:</h3>
+    <img src="{{ image_url }}" alt="Generated Plot" style="width: 500px; height: auto;">
+{% endif %}
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    
 
 </body>
 </html>

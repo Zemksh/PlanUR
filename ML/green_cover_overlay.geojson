@@ -1,0 +1,7 @@
+{
+"type": "FeatureCollection",
+"name": "green_cover_overlay",
+"features": [
+{ "type": "Feature", "properties": { "City": "Location", "Green_Cover_Percentage": 0.0, "Latitude": 13.1284, "Longitude": 77.6031 }, "geometry": { "type": "Point", "coordinates": [ 77.6031, 13.1284 ] } }
+]
+}
